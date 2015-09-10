@@ -8,7 +8,8 @@
 - set_fact:
     bastion_info_json: "{{ bastion_info_out.stdout | from_json }}"
 - set_fact:
-    bastion_hostname: "{{ bastion_info_json.Reservations[0].Instances[0].PublicDnsName }}"
+    bastion_hostname: "{{ bastion_info_json | ec2_instance_info('PublicDnsName') | first }}"
+    bastion_hostnames: "{{ bastion_info_json | ec2_instance_info('PublicDnsName') | join(' ') }}"
 
 # detect coreos cluser information
 - name: Detect CoreOS cluster info
