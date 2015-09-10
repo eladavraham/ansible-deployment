@@ -1,0 +1,11 @@
+# handles deployment of GAIA services to coreos cluster
+
+# detect & bootstrap coreos cluster
+- include: cluster_bootstrap.yaml
+
+# configure bastion instances
+- name: Deploy GAIA services
+  hosts: coreos_cluster_manager
+  gather_facts: False
+  roles:
+    - role: deploy_core_units

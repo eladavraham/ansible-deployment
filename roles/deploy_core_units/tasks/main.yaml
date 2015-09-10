@@ -1,0 +1,6 @@
+# deploys core fleet units to coreos cluster
+# core units include: skyDNS, registrator
+
+- name: Test execution on cluster
+  shell: "cat /etc/os-release"
+  register: cat_out
