@@ -1,0 +1,21 @@
+# bastion
+Host {{ bastion_hostname }}
+    User {{ bastion_user }}
+    ForwardAgent yes
+    StrictHostKeyChecking no
+    PasswordAuthentication no
+    UserKnownHostsFile /dev/null
+    IdentityFile {{ work_dir }}/keys/{{ bastion_keypair_file }}
+    BatchMode yes
+# coreos cluster
+Host {{ coreos_ips }}
+    User core
+    StrictHostKeyChecking no
+    PasswordAuthentication no
+    ServerAliveInterval 60
+    TCPKeepAlive yes
+    ControlMaster auto
+    ControlPath ~/.ssh/mux-%r@%h:%p
+    ControlPersist 8h
+    ProxyCommand ssh -q -A -t $( egrep -z -A1 '^-F$' /proc/$PPID/cmdline ) {{ bastion_user }}@{{ bastion_hostname }} -W %h:%p
+    IdentityFile {{ work_dir }}/keys/{{ coreos_keypair_file }}

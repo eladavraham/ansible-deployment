@@ -1,0 +1,7 @@
+---
+bastion_instance_tags: { "Name": "bastion", "group": "gaia", "env": "develop", "type": "bastion-vm" }
+bastion_user: "ubuntu"
+bastion_keypair_file: bastion-key-dev.pem
+
+coreos_instance_tags:  { "Name": "coreos", "group": "gaia", "env": "develop", "type": "cluster_node" }
+coreos_keypair_file: coreos-key-dev.pem
