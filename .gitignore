@@ -6,3 +6,4 @@
 *.pyc
 keys/
 keys
+ssh_config
