@@ -1,0 +1,20 @@
+# deploys influxdb
+
+- name: Stop and destroy old influxdb.service
+  shell: "fleetctl stop influxdb.service && fleetctl destroy influxdb.service"
+  ignore_errors: True
+- name: Stop and destroy old influxdb.data.service
+  shell: "fleetctl stop influxdb.data.service && fleetctl destroy influxdb.data.service"
+  ignore_errors: True
+
+# influxdb.data.service
+- name: Copy influxdb.data.service
+  copy: src="{{ gaia_fleet_location }}/influxdb.data.service" dest=~/influxdb.data.service
+- name: Start influxdb.data.service
+  shell: "fleetctl submit influxdb.data.service && fleetctl start influxdb.data.service"
+
+# influxdb.service
+- name: Copy influxdb.service
+  copy: src="{{ gaia_fleet_location }}/influxdb.service" dest=~/influxdb.service
+- name: Start influxdb.service
+  shell: "fleetctl submit influxdb.service && fleetctl start influxdb.service"

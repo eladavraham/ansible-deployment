@@ -1,0 +1,12 @@
+# This playbook deploys services implemented in gaia
+
+# detect coreos cluster
+- include: detect_cluster.yaml
+
+- name: Deploy GAIA services
+  hosts: coreos_cluster_manager
+  gather_facts: False
+  vars:
+    gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
+  roles:
+    - role: deploy_grafana

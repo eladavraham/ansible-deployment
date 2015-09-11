@@ -1,4 +1,5 @@
 # playbook which selects one machine from coreos cluster for cluster management operations
+# and creates groups coreos_cluster_manager (first cluster machine) and coreos_cluster (all cluster machines)
 - hosts: localhost
   connection: local
   gather_facts: False
@@ -29,10 +30,3 @@
         hostname="{{coreos_manager_ip}}"
         groupname=coreos_cluster_manager
         ansible_python_interpreter="PATH=/home/core/bin:$PATH python"
-
-# allow executing ansible on coreos cluster members
-- name: Bootstrap coreos cluster members with python
-  hosts: coreos_cluster
-  gather_facts: False
-  roles:
-    - role: defunctzombie.coreos-bootstrap

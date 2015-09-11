@@ -1,0 +1,24 @@
+# playbook to deploy all services. Unfortunately including individual playbooks isn't efficient since detect_cluster.yaml
+# executes several times and its not possible to skip executing it (when is very limited)
+- include: detect_cluster.yaml
+
+# allow executing ansible on coreos cluster members
+- name: Bootstrap coreos cluster members with python
+  hosts: coreos_cluster
+  gather_facts: False
+  roles:
+    - role: defunctzombie.coreos-bootstrap
+
+# deploy core + gaia services
+- name: Deploy all services
+  hosts: coreos_cluster_manager
+  gather_facts: False
+  vars:
+    gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
+  roles:
+    # core services
+    - role: deploy_dns
+    - role: deploy_mq
+    - role: deploy_influxdb
+    # gaia services
+    - role: deploy_grafana

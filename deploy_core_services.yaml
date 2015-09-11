@@ -1,0 +1,14 @@
+# deploys core services. Assumes ansible execution on cluster is possible.
+
+# detect coreos cluster
+- include: detect_cluster.yaml
+
+- name: Deploy core services
+  hosts: coreos_cluster_manager
+  gather_facts: False
+  vars:
+    gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
+  roles:
+    - role: deploy_dns
+    - role: deploy_mq
+    - role: deploy_influxdb
