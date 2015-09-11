@@ -10,8 +10,11 @@
     gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
   roles:
     # gaia services. Must match gaia services in deploy_all.yaml
-    - role: deploy_grafana
-    - role: deploy_events_indexer
-    - role: deploy_sts
-    - role: deploy_mgs
-    - role: deploy_haproxy
+    - { role: deploy_fleet_service, service_file: 'grafana.service' }
+    - { role: deploy_fleet_service, service_file: 'events-indexer.service' }
+    - { role: deploy_fleet_service, service_file: 'security-token-service.service' }
+    - { role: deploy_fleet_service, service_file: 'metrics-gateway-service.service' }
+    - { role: deploy_fleet_service, service_file: 'result-upload-service.service' }
+    - { role: deploy_fleet_service, service_file: 'circleci-tests-processor.service' }
+    - { role: deploy_fleet_service, service_file: 'jenkins-tests-processor.service' }
+    - { role: deploy_fleet_service, service_file: 'haproxy.service' }

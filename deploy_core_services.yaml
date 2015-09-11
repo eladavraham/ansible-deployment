@@ -9,6 +9,8 @@
   vars:
     gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
   roles:
-    - role: deploy_dns
+    # core services. Must match core services in deploy_all.yaml
+    - { role: deploy_fleet_service, service_file: 'skydns.service' }
+    - { role: deploy_fleet_service, service_file: 'registrator.service' }
     - role: deploy_mq
     - role: deploy_influxdb

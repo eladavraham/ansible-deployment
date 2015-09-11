@@ -1,0 +1,10 @@
+# deploys fleet service
+
+- name: Stop and destroy old {{service_file}}
+  shell: "fleetctl stop {{service_file}} && fleetctl destroy {{service_file}}"
+  ignore_errors: True
+
+- name: Copy {{service_file}}
+  copy: src="{{ gaia_fleet_location }}/{{service_file}}" dest=~/{{service_file}}
+- name: Start {{service_file}}
+  shell: "fleetctl submit {{service_file}} && fleetctl start {{service_file}}"
