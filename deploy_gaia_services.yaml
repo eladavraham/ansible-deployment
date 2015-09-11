@@ -9,4 +9,9 @@
   vars:
     gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
   roles:
+    # gaia services. Must match gaia services in deploy_all.yaml
     - role: deploy_grafana
+    - role: deploy_events_indexer
+    - role: deploy_sts
+    - role: deploy_mgs
+    - role: deploy_haproxy

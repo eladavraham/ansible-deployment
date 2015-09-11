@@ -1,0 +1,11 @@
+# deploys events-indexer
+
+- name: Stop and destroy old events-indexer.service
+  shell: "fleetctl stop events-indexer.service && fleetctl destroy events-indexer.service"
+  ignore_errors: True
+
+# events-indexer.service
+- name: Copy events-indexer.service
+  copy: src="{{ gaia_fleet_location }}/events-indexer.service" dest=~/events-indexer.service
+- name: Start events-indexer.service
+  shell: "fleetctl submit events-indexer.service && fleetctl start events-indexer.service"

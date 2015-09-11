@@ -1,0 +1,11 @@
+# deploys metrics-gateway-service
+
+- name: Stop and destroy old metrics-gateway-service.service
+  shell: "fleetctl stop metrics-gateway-service.service && fleetctl destroy metrics-gateway-service.service"
+  ignore_errors: True
+
+# metrics-gateway-service.service
+- name: Copy metrics-gateway-service.service
+  copy: src="{{ gaia_fleet_location }}/metrics-gateway-service.service" dest=~/metrics-gateway-service.service
+- name: Start metrics-gateway-service.service
+  shell: "fleetctl submit metrics-gateway-service.service && fleetctl start metrics-gateway-service.service"

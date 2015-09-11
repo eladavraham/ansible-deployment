@@ -20,5 +20,9 @@
     - role: deploy_dns
     - role: deploy_mq
     - role: deploy_influxdb
-    # gaia services
+    # gaia services. Must match deploy_gaia_services.yaml
     - role: deploy_grafana
+    - role: deploy_events_indexer
+    - role: deploy_sts
+    - role: deploy_mgs
+    - role: deploy_haproxy
