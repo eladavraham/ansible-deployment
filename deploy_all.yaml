@@ -27,6 +27,7 @@
     - { role: deploy_fleet_service, service_file: 'security-token-service.service' }
     - { role: deploy_fleet_service, service_file: 'metrics-gateway-service.service' }
     - { role: deploy_fleet_service, service_file: 'result-upload-service.service' }
+    - { role: deploy_fleet_service, service_file: 'sample-weather-processor.service' }
     - { role: deploy_fleet_service, service_file: 'circleci-tests-processor.service' }
     - { role: deploy_fleet_service, service_file: 'jenkins-tests-processor.service' }
     - { role: deploy_fleet_service, service_file: 'haproxy.service' }
