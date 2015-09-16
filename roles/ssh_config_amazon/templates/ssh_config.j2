@@ -17,5 +17,5 @@ Host {{ coreos_ips }}
     ControlMaster auto
     ControlPath ~/.ssh/mux-%r@%h:%p
     ControlPersist 8h
-    ProxyCommand ssh -q -A -t $( egrep -z -A1 '^-F$' /proc/$PPID/cmdline ) {{ bastion_user }}@{{ bastion_hostname }} -W %h:%p
+    ProxyCommand ssh -q -A -t -F {{ work_dir }}/{{ ssh_config_file }} {{ bastion_user }}@{{ bastion_hostname }} -W %h:%p
     IdentityFile {{ work_dir }}/keys/{{ coreos_keypair_file }}

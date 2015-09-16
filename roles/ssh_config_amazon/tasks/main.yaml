@@ -20,4 +20,4 @@
 
 # generate ssh_config from template
 - name: generate ssh_config
-  template: src='ssh_config.j2' dest='{{ work_dir }}/ssh_config'
+  template: src='ssh_config.j2' dest='{{ work_dir }}/{{ ssh_config_file }}'

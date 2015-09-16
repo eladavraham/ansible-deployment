@@ -1,4 +1,6 @@
 ---
+ssh_config_file: ssh_config
+
 bastion_instance_tags: { "Name": "bastion", "group": "gaia", "env": "develop", "type": "bastion-vm" }
 bastion_user: "ubuntu"
 bastion_keypair_file: bastion-key-dev.pem
