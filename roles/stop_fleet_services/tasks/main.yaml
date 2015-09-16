@@ -1,0 +1,6 @@
+# stops fleet services
+
+- name: Stop fleet services
+  shell: "fleetctl stop {{item}}"
+  ignore_errors: True
+  with_items: "{{ services }}"
