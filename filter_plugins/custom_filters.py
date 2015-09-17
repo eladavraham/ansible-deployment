@@ -1,3 +1,4 @@
+import sys
 
 def ec2_instance_info(value, return_key):
     # collect results from aws ec2 describe-instances result
@@ -22,6 +23,16 @@ def list_of_dicts_to_list(value, first_key, second_key=None):
 
     return results
 
+def startswith(value, prefix):
+    return value.startswith(prefix)
+
+def debug_filter(value):
+    # shows information about type and value. Useful for debugging strange issues with variables.
+    sys.stdout.write('type name = ' + type(value).__name__ + '\n')
+    sys.stdout.write('str = ' + str(value) + '\n')
+    sys.stdout.write('repr = ' + repr(value) + '\n')
+    return value
+
 class FilterModule(object):
     ''' Ansible core jinja2 filters '''
 
@@ -29,5 +40,7 @@ class FilterModule(object):
         return {
             'ec2_instance_info': ec2_instance_info,
             'has_key': has_key,
-            'list_of_dicts_to_list': list_of_dicts_to_list
+            'list_of_dicts_to_list': list_of_dicts_to_list,
+            'startswith': startswith,
+            'debug_filter': debug_filter
         }

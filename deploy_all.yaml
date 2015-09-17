@@ -15,5 +15,4 @@
   vars:
     gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
   roles:
-    - { role: deploy_fleet_services, services: "{{ core_services }}" }
-    - { role: deploy_fleet_services, services: "{{ gaia_services }}" }
+    - { role: deploy_fleet_services, services: "{{ all_services }}" }

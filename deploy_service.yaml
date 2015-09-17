@@ -1,0 +1,43 @@
+# playbook to deploy one selected service. The service is defined via "service" variable passed via --extra-vars on command line
+# the service must be prefix of either core_services or gaia_services names. Error will be reported if the service is not found
+# or more than one service matches
+
+- name: Match service from variable
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - group_vars/all.yaml
+  tasks:
+    - fail:
+        msg: "'service' variable must be defined via --extra-vars command line argument. It must be a prefix of a service name."
+      when: "service is not defined"
+
+    - set_fact:
+        matched_service: "{{ item }}"
+      with_items: "{{ all_services }}"
+      when: "{{ item.name | startswith(service) }}"
+      register: matched_service_out
+    - set_fact:
+        matched_services: "{{ matched_service_out.results | list_of_dicts_to_list('item') }}"
+
+    - fail:
+        msg: "Expected exactly one service to match, not {{ matched_services | length }}. Matched services: {{ matched_services }}"
+      when: "{{ matched_services | length }} != 1"
+
+- include: detect_cluster.yaml
+
+# allow executing ansible on coreos cluster members
+- name: Bootstrap coreos cluster members with python
+  hosts: coreos_cluster
+  gather_facts: False
+  roles:
+    - role: defunctzombie.coreos-bootstrap
+
+# deploy selected service
+- name: Deploy matched service
+  hosts: coreos_cluster_manager
+  gather_facts: False
+  vars:
+    gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
+  roles:
+    - { role: deploy_fleet_services, services: "{{ hostvars['localhost']['matched_services'] }}" }

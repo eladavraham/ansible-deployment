@@ -1,5 +1,9 @@
 # deploys fleet service, first stopping and destroying in reverse order, then submitting and starting all
 
+# force services parameter to be resolved (not be a unicode object)
+- set_fact:
+    services: "{{ services }}"
+
 - name: Stop and destroy fleet services
   shell: "fleetctl stop {{ item.name }} && fleetctl destroy {{ item.name }}"
   ignore_errors: True
