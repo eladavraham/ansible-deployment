@@ -1,11 +1,11 @@
 # ansible-deployment
-Ansible playbook for EC2 Gaia deployment
+Ansible playbooks for EC2 Gaia deployment
 
-This playbook assumes ansible-bastion and ansible-coreos-cluster have been executed and cluster is ready for service deployment. This means all coreos instances must be ready for SSH connections.
+These playbooks assumes ansible-bastion and ansible-coreos-cluster have been executed and cluster is ready for service deployment. This means all coreos instances must be ready for SSH connections.
 
 # setup environment
 
-In order to run this playbook you need to have the following installed on your machine:
+In order to run these playbooks you need to have the following installed on your machine:
 - Python 2.7.x
 - pip - Python package manager
 - pip modules:
@@ -43,7 +43,7 @@ Deployment playbooks require ssh_config file to be generated. This file is gener
 ansible-playbook ssh_config_amazon.yaml
 ```
 
-The generated file cannot be moved to other location, otherwise the the path to the file ssh_config must be adjusted in it. This path is required by ProxyCommand option which doesn't consider owner process command line arguments.
+The generated file cannot be moved to other location, otherwise path to the file ssh_config must be adjusted in it. This path is required by ProxyCommand option which doesn't consider owner process command line arguments.
 
 User may use the generated ssh_config to connect to any EC2 Gaia machine without having to use ssh-agent/ssh-add:
 ```
