@@ -1,0 +1,12 @@
+# destroys fleet service in reverse order
+
+- name: Destroy fleet services
+  shell: "fleetctl destroy {{ item.name }}"
+  ignore_errors: True
+  with_items: "{{ services[::-1] }}"
+
+# 2nd pass for services that have also templates
+- name: Destroy fleet services
+  shell: "fleetctl destroy {{ item }}"
+  ignore_errors: True
+  with_items: "{{ services[::-1] | list_of_dicts_to_list('template') }}"

@@ -1,0 +1,24 @@
+# deploys fleet service, first stopping and destroying in reverse order, then submitting and starting all
+
+- name: Stop and destroy fleet services
+  shell: "fleetctl stop {{ item.name }} && fleetctl destroy {{ item.name }}"
+  ignore_errors: True
+  with_items: "{{ services[::-1] }}"
+
+# 2nd pass for services that have also templates
+- name: Destroy fleet services
+  shell: "fleetctl destroy {{ item }}"
+  ignore_errors: True
+  with_items: "{{ services[::-1] | list_of_dicts_to_list('template') }}"
+
+- name: Copy fleet service files
+  copy: src="{{ gaia_fleet_location }}/{{ item }}" dest=~/{{item}}
+  with_items: "{{ services | list_of_dicts_to_list('template', 'name') }}"
+
+- name: Submit fleet services
+  shell: "fleetctl submit {{ item }}"
+  with_items: "{{ services | list_of_dicts_to_list('template', 'name') }}"
+
+- name: Start fleet services
+  shell: "fleetctl start {{ item.name }}"
+  with_items: "{{ services }}"

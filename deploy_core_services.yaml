@@ -1,7 +1,12 @@
-# deploys core services. Assumes ansible execution on cluster is possible.
-
-# detect coreos cluster
+# deploys core services
 - include: detect_cluster.yaml
+
+# allow executing ansible on coreos cluster members
+- name: Bootstrap coreos cluster members with python
+  hosts: coreos_cluster
+  gather_facts: False
+  roles:
+    - role: defunctzombie.coreos-bootstrap
 
 - name: Deploy core services
   hosts: coreos_cluster_manager
@@ -9,8 +14,4 @@
   vars:
     gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
   roles:
-    # core services. Must match core services in deploy_all.yaml
-    - { role: deploy_fleet_service, service_file: 'skydns.service' }
-    - { role: deploy_fleet_service, service_file: 'registrator.service' }
-    - role: deploy_mq
-    - role: deploy_influxdb
+    - { role: deploy_fleet_services, services: "{{ core_services }}" }

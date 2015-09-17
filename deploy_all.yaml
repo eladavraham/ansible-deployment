@@ -1,5 +1,4 @@
-# playbook to deploy all services. Unfortunately including individual playbooks isn't efficient since detect_cluster.yaml
-# executes several times and its not possible to skip executing it (when is very limited)
+# playbook to deploy all services
 - include: detect_cluster.yaml
 
 # allow executing ansible on coreos cluster members
@@ -16,18 +15,5 @@
   vars:
     gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
   roles:
-    # core services. Must match deploy_core_services.yaml
-    - { role: deploy_fleet_service, service_file: 'skydns.service' }
-    - { role: deploy_fleet_service, service_file: 'registrator.service' }
-    - role: deploy_mq
-    - role: deploy_influxdb
-    # gaia services. Must match deploy_gaia_services.yaml
-    - { role: deploy_fleet_service, service_file: 'grafana.service' }
-    - { role: deploy_fleet_service, service_file: 'events-indexer.service' }
-    - { role: deploy_fleet_service, service_file: 'security-token-service.service' }
-    - { role: deploy_fleet_service, service_file: 'metrics-gateway-service.service' }
-    - { role: deploy_fleet_service, service_file: 'result-upload-service.service' }
-    - { role: deploy_fleet_service, service_file: 'sample-weather-processor.service' }
-    - { role: deploy_fleet_service, service_file: 'circleci-tests-processor.service' }
-    - { role: deploy_fleet_service, service_file: 'jenkins-tests-processor.service' }
-    - { role: deploy_fleet_service, service_file: 'haproxy.service' }
+    - { role: deploy_fleet_services, services: "{{ core_services }}" }
+    - { role: deploy_fleet_services, services: "{{ gaia_services }}" }

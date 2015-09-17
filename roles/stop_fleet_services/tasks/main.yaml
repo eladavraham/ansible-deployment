@@ -1,6 +1,6 @@
-# stops fleet services
+# stops fleet services in reverse order
 
 - name: Stop fleet services
-  shell: "fleetctl stop {{item}}"
+  shell: "fleetctl stop {{ item.name }}"
   ignore_errors: True
-  with_items: "{{ services }}"
+  with_items: "{{ services[::-1] }}"

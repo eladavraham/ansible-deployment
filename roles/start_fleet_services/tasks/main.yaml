@@ -1,0 +1,5 @@
+# starts existing fleet service
+
+- name: Start fleet services
+  shell: "fleetctl start {{ item.name }}"
+  with_items: "{{ services }}"

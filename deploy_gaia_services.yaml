@@ -1,7 +1,12 @@
 # This playbook deploys services implemented in gaia
-
-# detect coreos cluster
 - include: detect_cluster.yaml
+
+# allow executing ansible on coreos cluster members
+- name: Bootstrap coreos cluster members with python
+  hosts: coreos_cluster
+  gather_facts: False
+  roles:
+    - role: defunctzombie.coreos-bootstrap
 
 - name: Deploy GAIA services
   hosts: coreos_cluster_manager
@@ -9,12 +14,4 @@
   vars:
     gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
   roles:
-    # gaia services. Must match gaia services in deploy_all.yaml
-    - { role: deploy_fleet_service, service_file: 'grafana.service' }
-    - { role: deploy_fleet_service, service_file: 'events-indexer.service' }
-    - { role: deploy_fleet_service, service_file: 'security-token-service.service' }
-    - { role: deploy_fleet_service, service_file: 'metrics-gateway-service.service' }
-    - { role: deploy_fleet_service, service_file: 'result-upload-service.service' }
-    - { role: deploy_fleet_service, service_file: 'circleci-tests-processor.service' }
-    - { role: deploy_fleet_service, service_file: 'jenkins-tests-processor.service' }
-    - { role: deploy_fleet_service, service_file: 'haproxy.service' }
+    - { role: deploy_fleet_services, services: "{{ gaia_services }}" }

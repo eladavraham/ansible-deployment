@@ -7,10 +7,9 @@
   roles:
     - role: defunctzombie.coreos-bootstrap
 
-# stop core + gaia services
-- name: Stop all services
+# start gaia services
+- name: Stop gaia services
   hosts: coreos_cluster_manager
   gather_facts: False
   roles:
-    - { role: stop_fleet_services, services: "{{ gaia_services }}" }
-    - { role: stop_fleet_services, services: "{{ core_services }}" }
+    - { role: start_fleet_services, services: "{{ gaia_services }}" }
