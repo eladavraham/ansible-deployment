@@ -8,7 +8,7 @@
     - role: defunctzombie.coreos-bootstrap
 
 # start gaia services
-- name: Stop gaia services
+- name: Start gaia services
   hosts: coreos_cluster_manager
   gather_facts: False
   roles:
