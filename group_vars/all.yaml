@@ -23,9 +23,10 @@ gaia_services:
   - {name: 'security-token-service.service'}
   - {name: 'metrics-gateway-service.service'}
   - {name: 'result-upload-service.service'}
-  - {name: 'sample-weather-processor.service'}
+#  - {name: 'sample-weather-processor.service'}
   - {name: 'circleci-tests-processor.service'}
   - {name: 'jenkins-tests-processor.service'}
+  - {name: 'alm-issue-change-processor.service'}
   - {name: 'haproxy.service'}
 
 all_services: "{{ core_services + gaia_services }}"
