@@ -5,7 +5,7 @@
   gather_facts: False
   vars_files:
     - group_vars/all.yaml
-    - group_vars/envs/{{ env | default("develop") }}/ssh_config.yaml
+    - group_vars/envs/{{ env | default("develop") }}/cluster_config.yaml
   tasks:
     # detect coreos cluser information
     - name: Detect CoreOS cluster info
