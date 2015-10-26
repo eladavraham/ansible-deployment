@@ -12,9 +12,7 @@ ec2_region_az4: "{{ lookup('env', 'AWS_DEFAULT_AZ4') }}"
 core_services:
   - {name: 'skydns.service'}
   - {name: 'registrator.service'}
-  - {name: 'rabbitmq.data@master.service', template: 'rabbitmq.data@.service'}
   - {name: 'rabbitmq@master.service', template: 'rabbitmq@.service'}
-  - {name: 'influxdb.data.service'}
   - {name: 'influxdb.service'}
 
 gaia_services:
