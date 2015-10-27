@@ -25,6 +25,7 @@ gaia_services:
   - {name: 'circleci-tests-processor.service'}
   - {name: 'jenkins-tests-processor.service'}
   - {name: 'alm-issue-change-processor.service'}
+  - {name: 'agm-issue-change-processor.service'}
   - {name: 'haproxy.service'}
 
 all_services: "{{ core_services + gaia_services }}"
