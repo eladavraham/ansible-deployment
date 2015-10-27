@@ -1,5 +1,12 @@
 - include: detect_cluster.yaml
 
+# allow executing ansible on coreos cluster members
+- name: Bootstrap coreos cluster members with python
+  hosts: coreos_cluster_manager
+  gather_facts: False
+  roles:
+    - role: defunctzombie.coreos-bootstrap
+
 # destroy gaia services
 - name: Destroy gaia services
   hosts: coreos_cluster_manager

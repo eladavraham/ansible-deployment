@@ -1,0 +1,12 @@
+# This playbook makes it possible to execute ansible modules on coreos. Ansible requires minimal python environment on
+# target machine.
+
+# detect coreos cluster
+- include: detect_cluster.yaml
+
+# allow executing ansible on coreos cluster members
+- name: Bootstrap coreos cluster members with python
+  hosts: coreos_cluster
+  gather_facts: False
+  roles:
+    - role: defunctzombie.coreos-bootstrap
