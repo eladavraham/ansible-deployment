@@ -11,6 +11,7 @@ ec2_region_az4: "{{ lookup('env', 'AWS_DEFAULT_AZ4') }}"
 # order of services defines starting order via fleet. Services are stopped in reverse order.
 core_services:
   - {name: 'logentries.service'}
+  - {name: 'cadvisor.service'}
   - {name: 'skydns.service'}
   - {name: 'registrator.service'}
   - {name: 'rabbitmq@master.service', template: 'rabbitmq@.service'}
