@@ -79,3 +79,17 @@ to (re)deploy haproxy run:
 ```
 ansible-playbook deploy_service.yaml --extra-vars="service=haproxy"
 ```
+
+# Monitoring
+
+For OS level monitoring, Amazon Cloud Watch is used and per machine metrics are visible in Amazon EC2 console.
+
+For Docker level monitoring cAdvisor is used on each coreos node, accessible through port 8050. CAdvisor can be accessed from local machine via SSH tunneling:
+
+```
+ssh -L yourlocalIP:8050:coreosIP:8050 -F keys/ssh_config bastionHostname
+```
+
+In Linux there is no need to specify 'yourlocalIP'. In Windows / vagrant environment 'yourlocalIP' needs to be an IP address on VM reachable from the Windows host.
+
+Point your browser to http://yourlocalIP:8050 to see cAdvisor. If proxy is used you may have to add an exception. At this point there is no centralized service where cAdvisor data can be accessed for the whole coreos cluster.
