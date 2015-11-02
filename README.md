@@ -68,16 +68,21 @@ There are several playbooks for management of services:
 - destroy_all.yaml - destroys all services
 - destroy_gaia_services.yaml - destroys main gaia services
 
+There is main.sh script that helps invoke all of the yamls, to print usage type:
+```
+./main.sh -h
+```
+
 Examples:
 
 to (re)deploy everything run:
 ```
-ansible-playbook deploy_all.yaml
+./main.sh -e production -f deploy_all.yaml
 ```
 
 to (re)deploy haproxy run:
 ```
-ansible-playbook deploy_service.yaml --extra-vars="service=haproxy"
+./main.sh -e production -f deploy_service.yaml -s haproxy
 ```
 
 # Monitoring

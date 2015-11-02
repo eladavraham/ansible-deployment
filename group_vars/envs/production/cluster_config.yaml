@@ -1,0 +1,2 @@
+---
+coreos_instance_tags:  { "Name": "coreos", "group": "gaia", "env": "production", "type": "cluster_node" }
