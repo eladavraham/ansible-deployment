@@ -10,24 +10,24 @@ ec2_region_az4: "{{ lookup('env', 'AWS_DEFAULT_AZ4') }}"
 # parametric services must have template file specified
 # order of services defines starting order via fleet. Services are stopped in reverse order.
 core_services:
-  - {name: 'logentries.service'}
-  - {name: 'cadvisor.service'}
-  - {name: 'skydns.service'}
-  - {name: 'registrator.service'}
-  - {name: 'rabbitmq@master.service', template: 'rabbitmq@.service'}
-  - {name: 'influxdb.service'}
+  - {name: 'logentries.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'cadvisor.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'skydns.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'registrator.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'rabbitmq@master.service', template: 'rabbitmq@.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'influxdb.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
 
 gaia_services:
-  - {name: 'grafana.service'}
-  - {name: 'events-indexer.service'}
-  - {name: 'security-token-service.service'}
-  - {name: 'metrics-gateway-service.service'}
-  - {name: 'result-upload-service.service'}
-#  - {name: 'sample-weather-processor.service'}
-  - {name: 'circleci-tests-processor.service'}
-  - {name: 'jenkins-tests-processor.service'}
-  - {name: 'alm-issue-change-processor.service'}
-  - {name: 'agm-issue-change-processor.service'}
-  - {name: 'haproxy.service'}
+  - {name: 'grafana.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'events-indexer.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'security-token-service.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'metrics-gateway-service.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'result-upload-service.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+#  - {name: 'sample-weather-processor.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master}
+  - {name: 'circleci-tests-processor.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'jenkins-tests-processor.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'alm-issue-change-processor.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'agm-issue-change-processor.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'haproxy.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
 
 all_services: "{{ core_services + gaia_services }}"

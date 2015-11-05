@@ -1,0 +1,16 @@
+# Download all services from their repositories 
+
+# force services parameter to be resolved (not be a unicode object)
+- set_fact:
+    services: "{{ services }}"
+
+- name: remove gaia-fleet folder
+  local_action: file path={{ gaia_fleet_location }} state=absent
+  ignore_errors: True
+
+- name: create gaia-fleet folder
+  local_action: file path={{ gaia_fleet_location }} state=directory
+
+- name: download fleet files from their repositories
+  local_action: get_url url="{{ item.url+'/'+item.branch+'/'+item.file }}" dest={{ gaia_fleet_location }} validate_certs=False
+  with_items: "{{ services | add_file_attribute() }}"

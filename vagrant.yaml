@@ -1,0 +1,6 @@
+---
+
+- set_fact:
+    coreos_ips: "{{ groups.vagrant }}"
+- set_fact:
+    coreos_manager_ip: "{{ groups.vagrant[0] }}"

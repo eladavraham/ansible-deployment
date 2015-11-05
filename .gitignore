@@ -1,8 +1,11 @@
 .idea
+.ropeproject
 *.iml
+.gitattributes
 .env
 .out
 .python
+.gaia-fleet
 *.pyc
 keys/
 keys

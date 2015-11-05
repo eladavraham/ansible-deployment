@@ -13,6 +13,7 @@
   hosts: coreos_cluster_manager
   gather_facts: False
   vars:
-    gaia_fleet_location: "{{ gaia_fleet_dir | default('../gaia-fleet') }}"
+    gaia_fleet_location: "{{ gaia_fleet_dir | default('.gaia-fleet') }}"
   roles:
+    - { role: download_fleet_units, services: "{{ all_services }}" }
     - { role: deploy_fleet_services, services: "{{ all_services }}" }
