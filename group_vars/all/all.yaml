@@ -16,6 +16,7 @@ core_services:
   - {name: 'cadvisor.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'skydns.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'registrator.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'vault.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'rabbitmq@master.service', template: 'rabbitmq@.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'influxdb.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
 
