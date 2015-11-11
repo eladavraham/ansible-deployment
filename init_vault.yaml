@@ -1,0 +1,100 @@
+# playbook to initialize vault, save root key, unseal key and unseal the vault
+# it is expected there is only one vault service running via systemd. Although vault supports multiple instances in standby mode
+# it works properly only with consul, not with skydns. With skydns amazon autoscale group could cause new instances to be started
+# and not being unsealed in time thus leading to random failures under high load.
+
+- include: detect_cluster.yaml
+
+# allow executing ansible on coreos cluster members
+- name: Bootstrap coreos cluster members with python
+  hosts: coreos_cluster_manager
+  gather_facts: False
+  roles:
+    - role: defunctzombie.coreos-bootstrap
+
+# detect node with vault docker container
+- name: Find vault service
+  hosts: coreos_cluster_manager
+  gather_facts: False
+  vars:
+    vault_port: 8200
+  tasks:
+    - set_fact:
+        work_dir: "{{ lookup('env', 'PWD') }}"
+    # detect vault.service IP for curl via fleet
+    - name: Find vault service IP
+      shell: "fleetctl list-units -fields unit,machine | /bin/awk '/^vault\\.service/ {print $2}' | grep -Eo '[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}'"
+      register: vault_service_ip_out
+    - set_fact:
+        vault_service_ip: "{{ vault_service_ip_out.stdout }}"
+    - fail:
+        msg: "vault.service IP not found"
+      when: vault_service_ip == ""
+    # wait until vault.service is fully started via fleet
+    - name: Wait until vault.service is ready
+      shell: "fleetctl list-units -fields unit,active | /bin/awk '/^vault\\.service/ {print $2}'"
+      register: vault_service_status_out
+      until: "{{ vault_service_status_out.stdout == 'active' }}"
+      delay: 10
+      retries: 20
+    # check vault is not already initialized
+    - name: check vault is not initialized
+      shell: "curl http://{{ vault_service_ip }}:{{vault_port}}/v1/sys/init"
+      register: vault_init_check_out
+    - set_fact:
+        vault_init_check: "{{ vault_init_check_out.stdout | from_json }}"
+    - fail:
+        msg: "vault is already initialized"
+      when: "vault_init_check.initialized == True"
+
+    # init vault via REST by curl
+    - name: Init vault
+      shell: "curl -X PUT -d '{\"secret_shares\":1, \"secret_threshold\": 1}' http://{{ vault_service_ip }}:{{vault_port}}/v1/sys/init"
+      register: vault_init_out
+    - set_fact:
+        vault_init: "{{ vault_init_out.stdout | from_json }}"
+
+    # extract unseal key & root token and save them
+    - set_fact:
+        vault_unseal_key: "{{ vault_init['keys'][0] }}"
+    - set_fact:
+        vault_root_token: "{{ vault_init.root_token }}"
+
+    # save on disk just in case it is lost in etcd
+    - name: "Save unseal key & root token into keys/vault.yaml on local machine"
+      local_action: copy content="{{ vault_init | to_nice_yaml }}" dest="{{ work_dir }}/keys/vault.yaml"
+
+    - name: Find coreos private IP
+      shell: "cat /etc/environment | grep 'COREOS_PRIVATE_IPV4' | grep -Eo '[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}'"
+      register: coreos_ip_out
+    - set_fact:
+        coreos_ip: "{{ coreos_ip_out.stdout }}"
+    - fail:
+        msg: "coreos IP not found"
+      when: coreos_ip == ""
+
+    # save unseal key into etcd via crypt
+    - copy:
+        content: "{{ vault_unseal_key }}"
+        dest: "/tmp/vault_unseal_key"
+    - name: "Save encrypted unseal key into etcd"
+      shell: "docker run -i -t -v /etc/gaia:/etc/gaia -v /tmp:/tmp --rm=true gaiaadm/crypt crypt set -backend=etcd -endpoint=http://{{coreos_ip}}:4001 -keyring /etc/gaia/gaia-pubring.gpg /gaia/vault/unseal_key /tmp/vault_unseal_key"
+    - shell: "rm /tmp/vault_unseal_key"
+
+    # save root token into etcd via crypt
+    - copy:
+        content: "{{ vault_root_token }}"
+        dest: "/tmp/vault_root_token"
+    - name: "Save encrypted vault root token into etcd"
+      shell: "docker run -i -t -v /etc/gaia:/etc/gaia -v /tmp:/tmp --rm=true gaiaadm/crypt crypt set -backend=etcd -endpoint=http://{{coreos_ip}}:4001 -keyring /etc/gaia/gaia-pubring.gpg /gaia/vault/root_token /tmp/vault_root_token"
+    - shell: "rm /tmp/vault_root_token"
+
+    # unseal vault
+    - name: Unseal vault
+      shell: "curl -X PUT -d '{\"key\":\"{{vault_unseal_key}}\"}' http://{{ vault_service_ip }}:{{vault_port}}/v1/sys/unseal"
+      register: vault_unseal_out
+    - set_fact:
+        vault_unseal: "{{ vault_unseal_out.stdout | from_json }}"
+    - fail:
+        msg: "vault was expected to be unsealed"
+      when: vault_unseal.sealed == True
