@@ -5,6 +5,7 @@ unset ANSIBLE_SSH_ARGS
 # read input parameters
 vflag=""
 prov="ec2"
+
 while [ $# -gt 0 ]
 do
   case "$1" in
@@ -13,6 +14,7 @@ do
     -e) environ="$2"; shift;;
     -p) prov="$2"; shift;;
     -s) service="$2"; shift;;
+    -p) provisioner="$2"; shift;;
     -h)
         echo >&2 "usage: $0 -e environment [-p provisioner: default 'ec2'] -f yamlfile [-s service] [-v]"
         exit 1;;
