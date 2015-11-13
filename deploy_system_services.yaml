@@ -1,0 +1,17 @@
+# deploys core services
+- include: detect_cluster.yaml
+
+# allow executing ansible on coreos cluster members
+- name: Bootstrap coreos cluster members with python
+  hosts: coreos_cluster_manager
+  gather_facts: False
+  roles:
+    - role: defunctzombie.coreos-bootstrap
+
+- name: Deploy core services
+  hosts: coreos_cluster_manager
+  gather_facts: False
+  vars:
+    gaia_fleet_location: "{{ gaia_fleet_dir | default('.gaia-fleet') }}"
+  roles:
+    - { role: deploy_fleet_services, services: "{{ system_services }}" }
