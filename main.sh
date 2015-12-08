@@ -17,9 +17,8 @@ do
     -g) gaia_fleet_dir="$2"; shift;;
     -e) env="$2"; shift;;
     -s) service="$2"; shift;;
-    -p) provisioner="$2"; shift;;
     -h)
-        echo >&2 "usage: $0 -e environment [-p provisioner: default 'ec2'] -f yamlfile [-s service] [-v]"
+        echo >&2 "usage: $0 -e environment [-p provisioner: default 'ec2'] [-g gaia_fleet_dir: default '.gaia-fleet'] -f yamlfile [-s service] [-v]"
         exit 1;;
      *) break;; # terminate while loop
   esac
