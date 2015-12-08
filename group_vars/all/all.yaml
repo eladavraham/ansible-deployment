@@ -2,10 +2,12 @@
 ec2_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
 ec2_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
 ec2_region: "{{ lookup('env', 'AWS_DEFAULT_REGION') }}"
-ec2_region_az1: "{{ lookup('env', 'AWS_DEFAULT_AZ1') }}"
-ec2_region_az2: "{{ lookup('env', 'AWS_DEFAULT_AZ2') }}"
-ec2_region_az3: "{{ lookup('env', 'AWS_DEFAULT_AZ3') }}"
-ec2_region_az4: "{{ lookup('env', 'AWS_DEFAULT_AZ4') }}"
+
+# CoreOS AWS tags
+coreos_instance_tags:  { "Name": "coreos", "group": "gaia", "env": "{{ environ }}", "type": "cluster_node" }
+
+# ssh_config file name
+ssh_config_file: "ssh_config_{{ env_nick[environ] }}"
 
 # parametric services must have template file specified
 # order of services defines starting order via fleet. Services are stopped in reverse order.

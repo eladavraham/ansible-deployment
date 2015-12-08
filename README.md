@@ -23,10 +23,6 @@ You will need also to setup the following ENV variables:
 export AWS_ACCESS_KEY_ID=A...XXX
 export AWS_SECRET_ACCESS_KEY=5....XXXX
 export AWS_DEFAULT_REGION='us-west-2'
-export AWS_DEFAULT_AZ1='us-west-2a'
-export AWS_DEFAULT_AZ2='us-west-2b'
-export AWS_DEFAULT_AZ3='us-west-2c'
-export AWS_DEFAULT_AZ4='us-west-2a'
 
 ```
 > **Note**: protect your AWS access key and secret access key
@@ -37,11 +33,12 @@ AWS credentials can also be stored in $HOME/.aws/credentials file.
 
 # SSH configuration
 
-Deployment playbooks require keys/ssh_config file to be generated. **ssh_config** file generation can be done by running `ssh_config_amazon.yaml` playbook from [ansible-coreos-cluster](https://github.com/gaia-adm/ansible-coreos-cluster) repository. 
+Deployment playbooks require `keys/$AWS_DEFAULT_REGION/ssh_config` file to be generated. **ssh_config** file generation can be done by running `ssh_config_amazon.yaml` playbook 
+from [ansible-coreos-cluster](https://github.com/gaia-adm/ansible-coreos-cluster) repository.
 
-User may use the generated ssh_config to connect to any EC2 Gaia machine without having to use ssh-agent/ssh-add:
+User may use the symlink (`.ssh_config`) to generated ssh_config to connect to any EC2 Gaia machine without having to use ssh-agent/ssh-add:
 ```
-ssh -F keys/ssh_config serverIp
+ssh -F .ssh_config serverIp
 ```
 
 For the list of IPs see ssh_config.

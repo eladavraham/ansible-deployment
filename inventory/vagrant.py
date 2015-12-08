@@ -14,6 +14,7 @@ Example Vagrant configuration using this script:
 
 # Copyright (C) 2013  Mark Mandel <mark@compoundtheory.com>
 #               2015  Igor Khomyakov <homyakov@gmail.com>
+#               2015  Alexei Ledenev <alexei.led@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,15 +36,12 @@ Example Vagrant configuration using this script:
 
 import sys
 import os.path
-import subprocess
+from plumbum import local
 from paramiko import SSHConfig
 from cStringIO import StringIO
 from optparse import OptionParser
 from collections import defaultdict
-try:
-    import json
-except:
-    import simplejson as json
+import json
 
 _group = 'vagrant'  # a default group
 _ssh_to_ansible = [('user', 'ansible_ssh_user'),
@@ -69,34 +67,34 @@ parser.add_option('--host', default=None, dest="host",
 
 # get all the ssh configs for all boxes in an array of dictionaries.
 def get_ssh_config():
-    return {k: get_a_ssh_config(k) for k in list_running_boxes()}
+    return {vbx: get_a_ssh_config(vbx) for vbx in list_running_boxes()}
 
 
 # list all the running boxes
 def list_running_boxes():
-    output = subprocess.check_output(["vagrant", "global-status"]).split('\n')
+    vagrant_cmd = local["vagrant"]
+    global_status_cmd = vagrant_cmd["global-status"]
+    output = global_status_cmd().split('\n')
 
     boxes = []
 
     for line in output[2:]:
-        vbox = tuple(line.split())
-        if len(vbox) == 5 and vbox[3] == "running":
+        box = tuple(line.split())
+        if len(box) == 5 and box[3] == "running":
             # append vagrant box: (id, name, provider, state, path)
-            boxes.append(vbox)
+            boxes.append(box)
 
     return tuple(boxes)
 
 
 # get the ssh config for a single box (id, name, provider, state, path)
 def get_a_ssh_config(box):
-    """Gives back a map of all the machine's ssh configurations"""
-
-    try:
-        output = subprocess.check_output(["vagrant", "ssh-config", box[1]], cwd=box[4])
-    except subprocess.CalledProcessError:
-        return
-    except OSError:
-        return
+    # call `vagrant ssh-config` with box id
+    local.cwd.chdir(box[4])
+    vagrant_cmd = local["vagrant"]
+    ssh_config_cmd = vagrant_cmd["ssh-config"]
+    output = ssh_config_cmd(box[1])
+    output = output[output.find("Host "):]
 
     config = SSHConfig()
     config.parse(StringIO(output))
@@ -106,11 +104,11 @@ def get_a_ssh_config(box):
     # man 5 ssh_config:
     # > It is possible to have multiple identity files ...
     # > all these identities will be tried in sequence.
-    for id in host_config['identityfile']:
-        if os.path.isfile(id):
-            host_config['identityfile'] = id
+    for identity_file in host_config['identityfile']:
+        if os.path.isfile(identity_file):
+            host_config['identityfile'] = identity_file
 
-    return {v: host_config[k] for k, v in _ssh_to_ansible}
+    return {v: host_config[h] for h, v in _ssh_to_ansible}
 
 # List out servers that vagrant has running
 # ------------------------------

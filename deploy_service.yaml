@@ -5,8 +5,6 @@
 - name: Match service from variable
   hosts: localhost
   gather_facts: False
-  vars_files:
-    - group_vars/all.yaml
   tasks:
     - fail:
         msg: "'service' variable must be defined via --extra-vars command line argument. It must be a prefix of a service name."
@@ -40,4 +38,5 @@
   vars:
     gaia_fleet_location: "{{ gaia_fleet_dir | default('.gaia-fleet') }}"
   roles:
+    - { role: download_fleet_units, services: "{{ hostvars['localhost']['matched_services'] }}" }
     - { role: deploy_fleet_services, services: "{{ hostvars['localhost']['matched_services'] }}" }
