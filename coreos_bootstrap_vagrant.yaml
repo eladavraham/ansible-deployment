@@ -1,0 +1,19 @@
+# This playbook makes it possible to execute ansible modules on coreos. Ansible requires minimal python environment on
+# target machine.
+
+# detect coreos cluster
+- include: detect_cluster.yaml
+
+# allow executing ansible on coreos cluster members
+- name: Bootstrap coreos cluster members with python
+  hosts: coreos_cluster
+  gather_facts: False
+  environment:
+    http_proxy: "{{ lookup('env', 'http_proxy') }}"
+    https_proxy: "{{ lookup('env', 'https_proxy') }}"
+    no_proxy: "{{ lookup('env', 'no_proxy') }}"
+    HTTP_PROXY: "{{ lookup('env', 'HTTP_PROXY') }}"
+    HTTPS_PROXY: "{{ lookup('env', 'HTTPS_PROXY') }}"
+    NO_PROXY: "{{ lookup('env', 'NO_PROXY') }}"
+  roles:
+    - role: defunctzombie.coreos-bootstrap

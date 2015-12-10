@@ -3,14 +3,8 @@
 # it works properly only with consul, not with skydns. With skydns amazon autoscale group could cause new instances to be started
 # and not being unsealed in time thus leading to random failures under high load.
 
-- include: detect_cluster.yaml
-
 # allow executing ansible on coreos cluster members
-- name: Bootstrap coreos cluster members with python
-  hosts: coreos_cluster_manager
-  gather_facts: False
-  roles:
-    - role: defunctzombie.coreos-bootstrap
+- include: coreos_bootstrap_{{ provisioner }}.yaml
 
 # detect node with vault docker container
 - name: Find vault service

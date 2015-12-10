@@ -22,14 +22,8 @@
         msg: "Expected exactly one service to match, not {{ matched_services | length }}. Matched services: {{ matched_services }}"
       when: "{{ matched_services | length }} != 1"
 
-- include: detect_cluster.yaml
-
 # allow executing ansible on coreos cluster members
-- name: Bootstrap coreos cluster members with python
-  hosts: coreos_cluster_manager
-  gather_facts: False
-  roles:
-    - role: defunctzombie.coreos-bootstrap
+- include: coreos_bootstrap_{{ provisioner }}.yaml
 
 # deploy selected service
 - name: Deploy matched service

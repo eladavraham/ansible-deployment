@@ -1,11 +1,5 @@
-- include: detect_cluster.yaml
-
 # allow executing ansible on coreos cluster members
-- name: Bootstrap coreos cluster members with python
-  hosts: coreos_cluster_manager
-  gather_facts: False
-  roles:
-    - role: defunctzombie.coreos-bootstrap
+- include: coreos_bootstrap_{{ provisioner }}.yaml
 
 # start gaia services
 - name: Start gaia services
