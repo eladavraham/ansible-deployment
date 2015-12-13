@@ -31,4 +31,4 @@ then
   export ANSIBLE_SSH_ARGS=""
 fi
 
-ansible-playbook --extra-vars "environ=${environ} service=${service} provisioner=${prov} gaia_fleet_dir=${gaia_fleet_dir}" ${yamlfile} ${vflag}
+ansible-playbook -i inventory/${prov}.py --extra-vars "environ=${environ} service=${service} provisioner=${prov} gaia_fleet_dir=${gaia_fleet_dir}" ${yamlfile} ${vflag}
