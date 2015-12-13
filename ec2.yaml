@@ -1,7 +1,7 @@
 ---
 # generate symlink to ssh_config and place it into project folder (this symlink is in .gitignore)
 - name: Create symlink to ssh_config
-  file: src='{{ work_dir }}/keys/{{ ec2_region }}/{{ ssh_config_file }}' dest='{{ work_dir }}/.ssh_config' state=link
+  file: src='/keys/{{ ec2_region }}/{{ ssh_config_file }}' dest='.ssh_config' state=link
 
 # detect coreos cluser information
 - name: Detect CoreOS cluster info

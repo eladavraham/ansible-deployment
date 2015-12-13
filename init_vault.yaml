@@ -13,8 +13,6 @@
   vars:
     vault_port: 8200
   tasks:
-    - set_fact:
-        work_dir: "{{ lookup('env', 'PWD') }}"
     # detect vault.service IP for curl via fleet
     - name: Find vault service IP
       shell: "fleetctl list-units -fields unit,machine | /bin/awk '/^vault\\.service/ {print $2}' | grep -Eo '[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}'"
@@ -56,7 +54,7 @@
 
     # save on disk just in case it is lost in etcd
     - name: "Save unseal key & root token into keys/vault.yaml on local machine"
-      local_action: copy content="{{ vault_init | to_nice_yaml }}" dest="{{ work_dir }}/keys/vault.yaml"
+      local_action: copy content="{{ vault_init | to_nice_yaml }}" dest="keys/vault.yaml"
 
     - name: Find coreos private IP
       shell: "cat /etc/environment | grep 'COREOS_PRIVATE_IPV4' | grep -Eo '[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}'"
