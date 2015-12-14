@@ -64,8 +64,8 @@ All service files will be automatically downloaded into `.gaia-fleet` folder (cu
 There are several playbooks for management of services:
 - deploy_all.yaml - (re)deploys all services
 - deploy_system_services.yaml - (re)deploys services considered system - i.e skyDNS, registrator
-- deploy_platform_services.yaml - (re)deploys services considered platform - i.e rabbitmq, influxdb
-- deploy_gaia_services.yaml - (re)deploys main gaia services
+- deploy_platform_services.yaml - (re)deploys services considered platform - i.e rabbitmq, influxdb, elasticsearch
+- deploy_gaia_services.yaml - (re)deploys main gaia services (also kibana and grafana)
 - deploy_service.yaml - (re)deploys single service selected by --extra-vars="service=someServicePrefix". For example running it with --extra-vars="service=sky" will redeploy skyDNS
 - stop_all.yaml - stops all services
 - stop_gaia_services.yaml - stops main gaia services

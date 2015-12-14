@@ -22,10 +22,13 @@ system_services:
 platform_services:
   - {name: 'rabbitmq@master.service', template: 'rabbitmq@.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'influxdb.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'es.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
 
 gaia_services:
   - {name: 'grafana.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'events-indexer.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'kibana.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'es-events-indexer.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'security-token-service.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'metrics-gateway-service.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'result-upload-service.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
