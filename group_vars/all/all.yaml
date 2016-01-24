@@ -38,5 +38,6 @@ gaia_services:
   - {name: 'alm-issue-change-processor.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'agm-issue-change-processor.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'haproxy.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'webhook-service.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
 
 all_services: "{{ system_services + platform_services + gaia_services }}"
