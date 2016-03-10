@@ -26,6 +26,9 @@ platform_services:
 gaia_services:
   - {name: 'kibana.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'es-events-indexer.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'dex-overlord.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'dex-worker.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'dex-client-config.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'security-token-service.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'metrics-gateway-service.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'result-upload-service.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
