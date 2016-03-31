@@ -20,8 +20,8 @@ system_services:
   - {name: 'vault-unseal.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
 
 platform_services:
-  - {name: 'rabbitmq@master.service', template: 'rabbitmq@1.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
-  - {name: 'rabbitmq@master.service', template: 'rabbitmq@2.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'rabbitmq@1.service', template: 'rabbitmq@.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'rabbitmq@2.service', template: 'rabbitmq@.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'es.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
 
 gaia_services:
