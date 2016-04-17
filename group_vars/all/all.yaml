@@ -22,7 +22,9 @@ system_services:
 platform_services:
   - {name: 'rabbitmq@1.service', template: 'rabbitmq@.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
   - {name: 'rabbitmq@2.service', template: 'rabbitmq@.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
-  - {name: 'es.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'es@1.service', template: 'es@.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'es@2.service', template: 'es@.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
+  - {name: 'es@3.service', template: 'es@.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
 
 gaia_services:
   - {name: 'kibana.service', url: 'https://raw.githubusercontent.com/gaia-adm/gaia-fleet', branch: 'master'}
